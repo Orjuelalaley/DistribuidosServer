@@ -6,7 +6,6 @@ public class IvaNode {
     public static void main(String[] args) {
         try {
             ServerSocket serverSocket = new ServerSocket(12346);
-
             while (true) {
                 try (Socket socket = serverSocket.accept();
                      ObjectInputStream in = new ObjectInputStream(socket.getInputStream());

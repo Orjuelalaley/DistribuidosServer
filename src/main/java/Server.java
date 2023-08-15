@@ -10,16 +10,19 @@ public class Server {
     public static void main(String[] args) {
         int serverPort = 12345;
 
-        try{
-            ServerSocket serverSocket = new ServerSocket(serverPort);
+        try (ServerSocket serverSocket = new ServerSocket(serverPort)) {
             System.out.println("Esperando conexiones en el puerto " + serverPort);
 
             while (true) {
-                Socket clientSocket = serverSocket.accept();
-                LocalDateTime connectionTime = LocalDateTime.now();
-                String formattedTime = connectionTime.format(DateTimeFormatter.ofPattern("hh:mm:ss a"));
-                System.out.println("Conexión aceptada desde " + clientSocket.getInetAddress() + " a las " + formattedTime);
-                handleClient(clientSocket, formattedTime);
+                try {
+                    Socket clientSocket = serverSocket.accept();
+                    LocalDateTime connectionTime = LocalDateTime.now();
+                    String formattedTime = connectionTime.format(DateTimeFormatter.ofPattern("hh:mm:ss a"));
+                    System.out.println("Conexión aceptada desde " + clientSocket.getInetAddress() + " a las " + formattedTime);
+                    handleClient(clientSocket, formattedTime);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();

@@ -36,24 +36,18 @@ public class Client {
         try (Socket socket = new Socket(serverAddress, serverPort);
              ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
              ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream())) {
-
             List<Producto> productos = new ArrayList<>();
-
             System.out.print("Ingrese la cantidad de productos: ");
             int cantidadProductos = scanner.nextInt();
             scanner.nextLine();
-
             for (int i = 0; i < cantidadProductos; i++) {
                 System.out.print("Ingrese el nombre del producto " + (i + 1) + ": ");
                 String nombre = scanner.nextLine();
-
                 System.out.print("Ingrese la categoría del producto " + (i + 1) + ": ");
                 String categoria = scanner.nextLine();
-
                 System.out.print("Ingrese el precio del producto " + (i + 1) + ": ");
                 double precio = scanner.nextDouble();
                 scanner.nextLine();
-
                 Producto producto = new Producto(nombre, categoria, precio);
                 productos.add(producto);
             }
@@ -61,7 +55,6 @@ public class Client {
             outputStream.flush();
             double sumaCalculada = inputStream.readDouble();
             System.out.println("Total a pagar: " + sumaCalculada);
-
             return true; // Indica que la comunicación fue exitosa
         }
     }
