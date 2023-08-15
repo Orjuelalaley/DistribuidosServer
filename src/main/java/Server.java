@@ -10,17 +10,15 @@ public class Server {
     public static void main(String[] args) {
         int serverPort = 12345;
 
-        try {
+        try{
             ServerSocket serverSocket = new ServerSocket(serverPort);
             System.out.println("Esperando conexiones en el puerto " + serverPort);
 
             while (true) {
                 Socket clientSocket = serverSocket.accept();
-                System.out.println("Conexión aceptada desde " + clientSocket.getInetAddress());
-
                 LocalDateTime connectionTime = LocalDateTime.now();
-                String formattedTime = connectionTime.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
-
+                String formattedTime = connectionTime.format(DateTimeFormatter.ofPattern("hh:mm:ss a"));
+                System.out.println("Conexión aceptada desde " + clientSocket.getInetAddress() + " a las " + formattedTime);
                 handleClient(clientSocket, formattedTime);
             }
         } catch (IOException e) {
@@ -42,7 +40,7 @@ public class Server {
                 for (Producto producto : productos) {
                     try {
                         Socket ivaSocket = new Socket();
-                        SocketAddress ivaAddress = new InetSocketAddress("localhost", 12356);
+                        SocketAddress ivaAddress = new InetSocketAddress("localhost", 12346);
                         ivaSocket.connect(ivaAddress, 10000); // 10 seconds timeout
 
                         ObjectOutputStream ivaOutputStream = new ObjectOutputStream(ivaSocket.getOutputStream());
@@ -58,7 +56,8 @@ public class Server {
                         ivaInputStream.close();
                         ivaSocket.close();
                     } catch (IOException | ClassNotFoundException e) {
-                        // In case of timeout or other exceptions, handle the operation locally
+                        e.printStackTrace();
+                        // In case of exception, handle the operation locally
                         double nuevoPrecio = producto.getPrecio() * 1.19;
                         producto.setPrecio(nuevoPrecio);
                         productosConIvaTemp.add(producto);
@@ -86,9 +85,7 @@ public class Server {
 
             sumaOutputStream.writeDouble(sumaPrecios);
             sumaOutputStream.flush();
-
             double sumaCalculada = sumaInputStream.readDouble();
-
             sumaOutputStream.close();
             sumaInputStream.close();
             sumaSocket.close();
@@ -101,4 +98,5 @@ public class Server {
             e.printStackTrace();
         }
     }
+
 }

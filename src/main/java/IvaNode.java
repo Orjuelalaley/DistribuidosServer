@@ -14,9 +14,10 @@ public class IvaNode {
 
                     Producto producto = (Producto) in.readObject();
 
-                    if (!producto.getCategoria().equalsIgnoreCase("Canasta")) {
+                    if (!producto.getCategory().equalsIgnoreCase("Canasta")) {
                         double nuevoPrecio = producto.getPrecio() * 1.19;
                         producto.setPrecio(nuevoPrecio);
+                        System.out.println("El precio del producto " + producto.getName() + " es: " + producto.getPrecio());
                     }
 
                     out.writeObject(producto);

@@ -55,7 +55,6 @@ public class Client {
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
             }
-
             try {
                 Socket backupSocket = new Socket(serverAddress, backupServerPort);
                 ObjectOutputStream backupOutputStream = new ObjectOutputStream(backupSocket.getOutputStream());
